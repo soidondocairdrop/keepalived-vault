@@ -1,0 +1,28 @@
+FROM ubuntu:20.04
+MAINTAINER Keepalive-thongth
+
+RUN apt update -y && \
+    apt upgrade -y
+
+
+RUN DEBIAN_FRONTEND=noninteractive TZ=Asia/Ho_Chi_Minh apt-get -y install tzdata
+
+RUN apt install tcpdump \
+    traceroute  \
+    net-tools \
+    vim  -y
+RUN apt install socat -y
+
+RUN apt install keepalived -y
+
+ADD entrypoint.sh /
+ADD keepalived/ /etc/keepalived/
+ADD check_alive.sh /
+
+
+RUN chmod +x /check_alive.sh
+RUN chmod +x /entrypoint.sh
+
+#startup script
+
+ENTRYPOINT ["/entrypoint.sh"]
