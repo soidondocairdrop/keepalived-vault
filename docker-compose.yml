@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+ keepalived:
+  image: keepalived-vault:latest
+  container_name: keepalived
+  restart: always
+  volumes:
+    - "haproxy_socket:/run/haproxy:ro"
+    - "/etc/localtime:/etc/localtime:ro"
+    - "/etc/keepalived/:/etc/keepalived:ro"
+  network_mode: "host"
+  cap_drop:
+    - NET_ADMIN
+  privileged: true
+volumes:
+        haproxy_socket:
+                external: true
